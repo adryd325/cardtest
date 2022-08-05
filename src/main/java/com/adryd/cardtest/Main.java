@@ -1,8 +1,6 @@
 package com.adryd.cardtest;
 
 import javax.smartcardio.*;
-import java.nio.ByteBuffer;
-import java.nio.charset.CharacterCodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -10,41 +8,10 @@ import java.util.List;
 import java.util.Set;
 
 public class Main {
-    // Is there seriously no builtin for this
-    public static String byteArrayToHexString(byte[] byteArray) {
-        String str = "";
-        for (byte b : byteArray) {
-            str = str.concat(String.format("%02X", b));
-        }
-        return str;
-    }
-
-    // Java has everything but also nothing
-    public static byte[] hexStringToByteArray(String str) {
-        if(str.startsWith("0x")) { // Get rid of potential prefix
-            str = str.substring(2);
-        }
-
-        if(str.length() % 2 != 0) { // If string is not of even length
-            str = '0' + str; // Assume leading zeroes were left out
-        }
-
-        byte[] result = new byte[str.length() / 2];
-        for(int i = 0; i < str.length(); i += 2) {
-            String nextByte = str.charAt(i) + "" + str.charAt(i + 1);
-            // To avoid overflow, parse as int and truncate:
-            result[i / 2] = (byte) Integer.parseInt(nextByte, 16);
-        }
-        return result;
-    }
-
-
     public static void printBytes(byte[] byteArray) {
         System.out.println((new String(byteArray, StandardCharsets.US_ASCII)).replaceAll("[^!-~]", "."));
-        System.out.println(byteArrayToHexString(byteArray));
+        System.out.println(Util.byteArrayToHexString(byteArray));
     }
-
-
     public static ResponseAPDU sendCommand(CardChannel channel, Commands command, byte[] data, int ne) throws CardException {
         return sendCommand(channel, command.cla, command.ins, command.p1, command.p2, data, ne);
     }
@@ -60,7 +27,8 @@ public class Main {
         return response;
     }
 
-    public static void main(String[] argv) throws CardException, CharacterCodingException {
+    public static void main(String[] argv) throws CardException {
+
 
         TerminalFactory factory = TerminalFactory.getDefault();
 
@@ -94,23 +62,28 @@ public class Main {
         ResponseAPDU onepay = sendCommand(channel, Commands.SELECT, "1PAY.SYS.DDF01".getBytes(), 0x100);
         ResponseAPDU twopay = sendCommand(channel, Commands.SELECT, "2PAY.SYS.DDF01".getBytes(), 0x100);
 
+        TLVParser payParser = new TLVParser();
+        payParser.parse(twopay.getData());
+
         Set<byte[]> foundAids = new HashSet<>();
         // Pretend we decoded tlv and don't just add known values
         // Interac
-        foundAids.add(hexStringToByteArray("A0000002771010"));
+        foundAids.add(Util.hexStringToByteArray("A0000002771010"));
         // Visa
-        foundAids.add(hexStringToByteArray("A0000000031010"));
+        foundAids.add(Util.hexStringToByteArray("A0000000031010"));
         // Mastercard
-        foundAids.add(hexStringToByteArray("A0000000041010"));
+        foundAids.add(Util.hexStringToByteArray("A0000000041010"));
 
         // Example response for VISA CREDIT emv test card
-        byte[] PDOLResponse = hexStringToByteArray("9F02060000000000019F1A02007C");
+        byte[] PDOLResponse = Util.hexStringToByteArray("9F02060000000000019F1A02007C");
 
-        for (byte [] aid : foundAids) {
+        for (byte[] aid : foundAids) {
             ResponseAPDU applicationResponse = sendCommand(channel, Commands.SELECT, aid, 0x100);
+            TLVParser aidParser = new TLVParser();
+            aidParser.parse(applicationResponse.getData());
 
             // Pretend we decoded tlv
-            byte[] PODL = hexStringToByteArray("9F59039F5A019F02069F1A025F2A029F37049F5801");
+            byte[] PODL = Util.hexStringToByteArray("9F59039F5A019F02069F1A025F2A029F37049F5801");
         }
         card.disconnect(false);
     }

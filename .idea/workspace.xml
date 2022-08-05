@@ -5,16 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f4f570b6-0da1-498b-bbce-a8cb010ac0a5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/adryd/cardtest/Commands.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/adryd/cardtest/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/adryd/cardtest/ResponseCodes.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/adryd/cardtest/Util.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/adryd/cardtest/TLVEntry.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/adryd/cardtest/TLVParser.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/adryd/cardtest/TLVTags.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/adryd/cardtest/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/adryd/cardtest/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/adryd/cardtest/Util.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/adryd/cardtest/Util.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,6 +20,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Interface" />
         <option value="Enum" />
         <option value="Class" />
       </list>
